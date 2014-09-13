@@ -12,10 +12,10 @@ class Geocode(http: Http = Http) {
    * @see https://developers.google.com/maps/documentation/geocoding/#Limits
    */
   def ?(location: Location)(implicit executionContext: ExecutionContext): Future[Either[Error, List[ResponseResult]]] = {
-    import location._
-    val latlng = ("latlng", "%s,%s".format(latitude, longitude))
+    import Geocode._
+    //val location = ("latlng", "%s,%s".format(latitude, longitude))
     val req = url(googleapis) / "maps" / "api" / "geocode" / "json"
-    http(req <<? List(latlng, "sensor" -> "false") OK as.String).map {
+    http(req <<? List(location.toParam, "sensor" -> "false") OK as.String).map {
       x =>
         val json = Json.parse(x)
         val response = json.validate[GeocodeResponse].get

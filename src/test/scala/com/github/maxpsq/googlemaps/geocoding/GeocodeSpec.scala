@@ -16,9 +16,13 @@ class GeocodeSpec extends SpecificationWithJUnit {
 
       def ?(x: Location) = Await.result(geocode ? x, Duration(3, SECONDS))
 
-      ?(Location(50.516196, 30.466651)) must beRight
-      ?(Location(50.445057, 30.521049)) must beRight
-      ?(Location(51.498685, -0.12967)) must beRight
+      ?(GeoPoint(50.516196, 30.466651)) must beRight
+      ?(GeoPoint(50.445057, 30.521049)) must beRight
+      ?(GeoPoint(51.498685, -0.12967)) must beRight
+
+      ?(Address("Via Montenapoleane, 2 Milano, Italia")) must beRight
+      ?(Address("Via Condotti, 3 Roma, Italia")) must beRight
+      ?(Address("Viale Nazzario Sauro, 2 Pavia, Italia")) must beRight
     }
   }
 }

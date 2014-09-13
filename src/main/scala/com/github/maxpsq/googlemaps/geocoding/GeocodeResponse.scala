@@ -3,7 +3,7 @@ package com.github.maxpsq.googlemaps.geocoding
 import play.api.libs.json._ // JSON library
 import play.api.libs.json.Reads._ // Custom validation helpers
 import play.api.libs.functional.syntax._ // Combinator syntax
-
+import com.github.maxpsq.googlemaps.ResponseStatus
 
 sealed trait Error
 case object ZeroResults    extends Error

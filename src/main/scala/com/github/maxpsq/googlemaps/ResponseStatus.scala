@@ -1,4 +1,4 @@
-package com.github.maxpsq.googlemaps.geocoding
+package com.github.maxpsq.googlemaps
 
 import play.api.libs.json._ // JSON library
 import play.api.libs.json.Reads._ // Custom validation helpers

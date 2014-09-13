@@ -3,6 +3,7 @@ package com.github.maxpsq.googlemaps.geocoding
 import play.api.libs.json._
 import dispatch._
 import scala.concurrent.ExecutionContext
+import com.github.maxpsq.googlemaps.ResponseStatus
 
 class Geocode(http: Http = Http) {
   import Geocode._

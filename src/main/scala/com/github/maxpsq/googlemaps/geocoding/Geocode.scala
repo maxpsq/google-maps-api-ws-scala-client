@@ -13,8 +13,6 @@ class Geocode(http: Http = Http) {
    */
   def ?(location: Location)(implicit executionContext: ExecutionContext): Future[Either[Error, List[ResponseResult]]] = {
     import Geocode._
-    //val location = ("latlng", "%s,%s".format(latitude, longitude))
-    val req = url(googleapis) / "maps" / "api" / "geocode" / "json"
     http(req <<? List(location.toParam, "sensor" -> "false") OK as.String).map {
       x =>
         val json = Json.parse(x)
@@ -31,5 +29,5 @@ class Geocode(http: Http = Http) {
 }
 
 object Geocode {
-  val googleapis = "http://maps.googleapis.com"
+  val req = url("http://maps.googleapis.com") / "maps" / "api" / "geocode" / "json"
 }

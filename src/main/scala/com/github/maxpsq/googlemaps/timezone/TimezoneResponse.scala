@@ -19,7 +19,7 @@ object ResponseResult {
 
 /* 
  * Even if only one result is expected, I wrap it in a List.
- * This is an attempt to Normalize de Response structure of all the WS.
+ * This is an attempt to Normalize the Response structure of all the WS.
  */
 case class TimezoneResponse(
     results: List[ResponseResult], 

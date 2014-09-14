@@ -12,7 +12,7 @@ class Timezone(http: Http = Http) extends GoogleClient {
    * This call to google service is limited
    * @see https://developers.google.com/maps/documentation/timezone/#Limits
    */
-  def ?(location: Location, timestamp: Int, language: String = "en")(implicit executionContext: ExecutionContext): Future[Either[Error, ResponseResult]] = {
+  def ?(location: Location, timestamp: Int, language: String = "en")(implicit executionContext: ExecutionContext): Future[Either[Error, List[ResponseResult]]] = {
     import Timezone._
     http(req <<? List(location.tuple, "timestamp" -> timestamp.toString, "language" -> language) OK as.String).map {
       x =>

@@ -17,9 +17,12 @@ object ResponseResult {
   implicit val jsonReads = Json.reads[ResponseResult]
 }
 
-
+/* 
+ * Even if only one result is expected, I wrap it in a List.
+ * This is an attempt to Normalize de Response structure of all the WS.
+ */
 case class TimezoneResponse(
-    results: ResponseResult, 
+    results: List[ResponseResult], 
     status: ResponseStatus.Value
 )
 
@@ -33,7 +36,7 @@ object TimezoneResponse {
   )( TimezoneResponse.apply(_:Option[Int], _:Option[Int], _:String, _:Option[String], _:Option[String] ) )
   
   def apply(dst: Option[Int], raw: Option[Int], status: String, tzID: Option[String], tzn: Option[String]): TimezoneResponse = {
-    TimezoneResponse(ResponseResult(dst, raw, tzID, tzn), ResponseStatus(status) ) 
+    TimezoneResponse(List(ResponseResult(dst, raw, tzID, tzn)), ResponseStatus(status) ) 
   }
     
 }

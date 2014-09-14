@@ -5,11 +5,6 @@ import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 import com.github.maxpsq.googlemaps.ResponseStatus
 
-sealed trait Error
-case object ZeroResults    extends Error
-case object OverQuotaLimit extends Error
-case object Denied         extends Error
-case object InvalidRequest extends Error
 
 case class AddressComponent(
     long_name: String, 
@@ -33,12 +28,13 @@ object ResponseResult {
 }
 
 
-case class GeocodeResponse(
+case class GeocodeResponse (
     results: List[ResponseResult], 
     status: ResponseStatus.Value
-)
+)  
 
 object GeocodeResponse {
+  
   implicit val jsonReads: Reads[GeocodeResponse] = (
     (__ \ 'results).read[List[ResponseResult]] ~
     (__ \ 'status).read[String] 

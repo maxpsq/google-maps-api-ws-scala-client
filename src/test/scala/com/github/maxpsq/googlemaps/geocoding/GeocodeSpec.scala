@@ -7,14 +7,15 @@ import org.specs2.mutable.SpecificationWithJUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration._
+import com.github.maxpsq.googlemaps.geocoding.Locations._
 
 @RunWith(classOf[JUnitRunner])
 class GeocodeSpec extends SpecificationWithJUnit {
   "Geocode" should {
     "find data by location" in {
-      val geocode = new Geocode()
+      val client = new Geocode()
 
-      def ?(x: Location) = Await.result(geocode ? x, Duration(3, SECONDS))
+      def ?(x: Location) = Await.result(client ? x, Duration(3, SECONDS))
 
       ?(GeoPoint(50.516196, 30.466651)) must beRight
       ?(GeoPoint(50.445057, 30.521049)) must beRight

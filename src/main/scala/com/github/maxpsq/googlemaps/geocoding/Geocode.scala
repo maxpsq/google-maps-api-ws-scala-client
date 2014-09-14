@@ -3,28 +3,27 @@ package com.github.maxpsq.googlemaps.geocoding
 import play.api.libs.json._
 import dispatch._
 import scala.concurrent.ExecutionContext
-import com.github.maxpsq.googlemaps.ResponseStatus
+import com.github.maxpsq.googlemaps._
+import com.github.maxpsq.googlemaps.geocoding.Locations._
 
-class Geocode(http: Http = Http) {
-  import Geocode._
+class Geocode(http: Http = Http) extends GoogleClient {
 
   /**
    * This call to google service is limited
    * @see https://developers.google.com/maps/documentation/geocoding/#Limits
    */
-  def ?(location: Location)(implicit executionContext: ExecutionContext): Future[Either[Error, List[ResponseResult]]] = {
+  def ?(location: Location, language: String = "en")(implicit executionContext: ExecutionContext): Future[Either[Error, List[ResponseResult]]] = {
     import Geocode._
-    http(req <<? List(location.toParam, "sensor" -> "false") OK as.String).map {
+    http(req <<? List(location.tuple, "sensor" -> "false", "language" -> language) OK as.String).map {
       x =>
         val json = Json.parse(x)
-        val response = json.validate[GeocodeResponse].get
-        response.status match {
-          case ResponseStatus.ZeroResults ⇒ Left(ZeroResults)
-          case ResponseStatus.OverQueryLimit ⇒ Left(OverQuotaLimit)
-          case ResponseStatus.RequestDenied ⇒ Left(Denied)
-          case ResponseStatus.InvalidRequest ⇒ Left(InvalidRequest)
-          case _ ⇒ Right(response.results)
+        val response = json.validate[GeocodeResponse].map{ 
+          case r: GeocodeResponse => r
+        }.recoverTotal{
+          e => throw new RuntimeException("Error while parsing JSON: "+ JsError.toFlatJson(e))
         }
+
+        evalStatus(response.status, response.results)
     }
   }
 }

@@ -12,7 +12,20 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 
 ```scala
       val geocode = new Geocode()
-      geocode ? GeoPoint(51.498685, -0.12967) match {
+
+      def ?(location: Location) = Await.result(client ? location, Duration(3, SECONDS))
+
+      //  Geocoding
+      ?(Address("Via Montenapoleone, 4, Milan, Italy")) match {
+            case Right(results) => results.foreach(r => println(r.formatted_address + " -> " + r.geometry.location))
+            case Left(error) => println(error)
+      }
+
+//    Via Montenapoleone, 20121 Milan, Italy -> Point(45.4678198,9.1958378)
+
+
+      // Reverse Geocoding
+      ?(GeoPoint(51.498685, -0.12967)) match {
             case Right(results) => results.foreach(r => println(r.formatted_address))
             case Left(error) => println(error)
       }

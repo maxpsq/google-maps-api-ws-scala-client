@@ -1,6 +1,3 @@
 language: scala
- scala:
-   - "2.11.1"
- jdk:
-   - oraclejdk6
-   - openjdk6
+  scala:
+    - "2.11.1"

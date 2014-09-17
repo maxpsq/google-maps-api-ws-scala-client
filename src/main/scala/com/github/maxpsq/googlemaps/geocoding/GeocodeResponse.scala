@@ -16,10 +16,40 @@ object AddressComponent {
   implicit val jsonReads = Json.reads[AddressComponent]
 }
 
+case class Point(
+    lat: Double,
+    lng: Double
+)
+object Point {
+  implicit val jsonReads = Json.reads[Point]  
+}
+
+case class Rectangle(
+    northeast: Point,
+    southwest: Point
+)
+object Rectangle {
+  implicit val jsonReads = Json.reads[Rectangle]  
+}
+
+
+case class Geometry (
+    bounds: Option[Rectangle],
+    location: Point,
+    location_type: String,
+    viewport: Rectangle
+)
+
+object Geometry {
+  implicit val jsonReads = Json.reads[Geometry]  
+}
+
+
 
 case class ResponseResult(
     address_components: List[AddressComponent], 
     formatted_address: String,
+    geometry: Geometry,
     types: List[String]
 )
 

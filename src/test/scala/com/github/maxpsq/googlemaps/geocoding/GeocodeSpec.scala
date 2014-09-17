@@ -15,7 +15,7 @@ class GeocodeSpec extends SpecificationWithJUnit {
     "find data by location" in {
       val client = new Geocode()
 
-      def ?(x: Location) = Await.result(client ? x, Duration(3, SECONDS))
+      def ?(location: Location) = Await.result(client ? location, Duration(3, SECONDS))
 
       ?(GeoPoint(50.516196, 30.466651)) must beRight
       ?(GeoPoint(50.445057, 30.521049)) must beRight

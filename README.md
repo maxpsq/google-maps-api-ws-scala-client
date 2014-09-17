@@ -49,7 +49,7 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 
 ## Setup
 
-# Maven
+### Maven
 
 1. Add this repository to your pom.xml:
 ```xml
@@ -69,7 +69,7 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
     </dependency>
 ```
 
-# SBT
+### SBT
 
 1. Add this repository to your build.sbt:
 ```

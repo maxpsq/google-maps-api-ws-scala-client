@@ -21,9 +21,9 @@ class GeocodeSpec extends SpecificationWithJUnit {
       ?(GeoPoint(50.445057, 30.521049)) must beRight
       ?(GeoPoint(51.498685, -0.12967)) must beRight
 
-      ?(Address("Via Montenapoleane, 2 Milano, Italia")) must beRight
-      ?(Address("Via Condotti, 3 Roma, Italia")) must beRight
-      ?(Address("Viale Nazzario Sauro, 2 Pavia, Italia")) must beRight
+      ?(Address("Via Montenapoleane, 2, Milan, Italy")) must beRight
+      ?(Address("Via Condotti, 3, Rome, Italy")) must beRight
+      ?(Address("Viale Nazzario Sauro, 2, Pavia, Italy")) must beRight
     }
   }
 }

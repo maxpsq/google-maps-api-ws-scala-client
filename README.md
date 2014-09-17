@@ -13,7 +13,7 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 ```scala
       val geocode = new Geocode()
 
-      def ?(location: Location) = Await.result(client ? location, Duration(3, SECONDS))
+      def ?(location: Location) = Await.result(geocode ? location, Duration(3, SECONDS))
 
       //  Geocoding
       ?(Address("Via Montenapoleone, 4, Milan, Italy")) match {

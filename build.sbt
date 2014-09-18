@@ -2,7 +2,7 @@ organization := "com.github.maxpsq"
 
 name := "google-maps-api-ws-scala-client"
 
-version := "0.2"
+version := "0.1"
 
 scalaVersion := "2.11.1"
 

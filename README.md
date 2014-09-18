@@ -65,7 +65,7 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
     <dependency>
         <groupId>com.github.maxpsq</groupId>
         <artifactId>maxpsq-gmapsclient_2.11</artifactId>
-        <version>0.2</version>
+        <version>0.1</version>
     </dependency>
 ```
 
@@ -79,6 +79,6 @@ resolvers += "Sonatype repository" at "https://oss.sonatype.org/service/local/st
 2. Add dependency to your build.sbt:
 ```
 libraryDependencies ++= Seq(
-    "com.github.maxpsq" % "maxpsq-gmapsclient_2.11" % "0.2"
+    "com.github.maxpsq" % "maxpsq-gmapsclient_2.11" % "0.1"
 )
 ```

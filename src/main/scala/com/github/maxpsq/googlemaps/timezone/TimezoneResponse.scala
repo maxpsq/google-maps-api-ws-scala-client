@@ -23,7 +23,8 @@ object ResponseResult {
  */
 case class TimezoneResponse(
     results: List[ResponseResult], 
-    status: ResponseStatus.Value
+    status: ResponseStatus.Value,
+    error_message: Option[String]
 )
 
 object TimezoneResponse {
@@ -32,11 +33,12 @@ object TimezoneResponse {
     (__ \ 'rawOffset).readNullable[Int] ~
     (__ \ 'status).read[String] ~   
     (__ \ 'timeZoneId).readNullable[String] ~
-    (__ \ 'timeZoneName).readNullable[String] 
-  )( TimezoneResponse.apply(_:Option[Int], _:Option[Int], _:String, _:Option[String], _:Option[String] ) )
+    (__ \ 'timeZoneName).readNullable[String] ~
+    (__ \ 'error_message).readNullable[String]
+  )( TimezoneResponse.apply(_:Option[Int], _:Option[Int], _:String, _:Option[String], _:Option[String], _:Option[String] ) )
   
-  def apply(dst: Option[Int], raw: Option[Int], status: String, tzID: Option[String], tzn: Option[String]): TimezoneResponse = {
-    TimezoneResponse(List(ResponseResult(dst, raw, tzID, tzn)), ResponseStatus(status) ) 
+  def apply(dst: Option[Int], raw: Option[Int], status: String, tzID: Option[String], tzn: Option[String], errMsg: Option[String]): TimezoneResponse = {
+    TimezoneResponse(List(ResponseResult(dst, raw, tzID, tzn)), ResponseStatus(status), errMsg ) 
   }
     
 }

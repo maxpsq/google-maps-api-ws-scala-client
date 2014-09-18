@@ -60,16 +60,18 @@ object ResponseResult {
 
 case class GeocodeResponse (
     results: List[ResponseResult], 
-    status: ResponseStatus.Value
+    status: ResponseStatus.Value,
+    error_message: Option[String]
 )  
 
 object GeocodeResponse {
   
   implicit val jsonReads: Reads[GeocodeResponse] = (
     (__ \ 'results).read[List[ResponseResult]] ~
-    (__ \ 'status).read[String] 
-  )( GeocodeResponse.apply( _: List[ResponseResult], _: String) ) 
+    (__ \ 'status).read[String] ~
+    (__ \ 'error_message).readNullable[String] 
+  )( GeocodeResponse.apply( _: List[ResponseResult], _: String, _: Option[String]) ) 
   
-  def apply(results: List[ResponseResult], status: String): GeocodeResponse =
-    GeocodeResponse(results, ResponseStatus(status) )
+  def apply(results: List[ResponseResult], status: String, errMsg: Option[String]): GeocodeResponse =
+    GeocodeResponse(results, ResponseStatus(status), errMsg )
 }

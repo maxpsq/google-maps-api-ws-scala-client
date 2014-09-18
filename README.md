@@ -5,7 +5,7 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 ## Supports
 
 * Getting geocode responses for an address (geocoding)
-* Getting geocode responses for a GPS coordinates (reverse geocoding)
+* Getting geocode responses for a GPS coordinate (reverse geocoding)
 * Getting time zone responses for a GPS coordinate 
 
 ## Example

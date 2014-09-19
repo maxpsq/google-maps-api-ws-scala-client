@@ -5,22 +5,13 @@ import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 import com.github.maxpsq.googlemaps.ResponseStatus
 
-
-case class ResponseResult(
-   dstOffset: Option[Int],
-   rawOffset: Option[Int],
-   timeZoneId: Option[String],
-   timeZoneName: Option[String]
+case class ResponseResult (
+    dstOffset: Int,
+    rawOffset: Int,
+    timeZoneId: String,
+    timeZoneName: String
 )
 
-object ResponseResult {
-  implicit val jsonReads = Json.reads[ResponseResult]
-}
-
-/* 
- * Even if only one result is expected, I wrap it in a List.
- * This is an attempt to Normalize the Response structure of all the WSs.
- */
 case class TimezoneResponse(
     results: List[ResponseResult], 
     status: ResponseStatus.Value,
@@ -38,7 +29,12 @@ object TimezoneResponse {
   )( TimezoneResponse.apply(_:Option[Int], _:Option[Int], _:String, _:Option[String], _:Option[String], _:Option[String] ) )
   
   def apply(dst: Option[Int], raw: Option[Int], status: String, tzID: Option[String], tzn: Option[String], errMsg: Option[String]): TimezoneResponse = {
-    TimezoneResponse(List(ResponseResult(dst, raw, tzID, tzn)), ResponseStatus(status), errMsg ) 
+    val respStatus = ResponseStatus(status)
+    respStatus.toString match {
+      case "OK" => TimezoneResponse(List(ResponseResult(dst.get, raw.get, tzID.get, tzn.get)), respStatus, errMsg )
+      case _ => TimezoneResponse(List(), respStatus, errMsg )
+    }
+     
   }
     
 }

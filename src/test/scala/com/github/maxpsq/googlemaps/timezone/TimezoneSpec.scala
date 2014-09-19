@@ -14,7 +14,7 @@ class TimezoneSpec extends SpecificationWithJUnit {
     "find data by location and timestamp (epoch)" in {
       val client = new Timezone()
 
-      def ?(x: Location, t: Int) = Await.result(client ?(x, t), Duration(3, SECONDS))
+      def ?(x: Location, t: Long) = Await.result(client ?(x, t), Duration(3, SECONDS))
 
       val epoch = 198264918
       

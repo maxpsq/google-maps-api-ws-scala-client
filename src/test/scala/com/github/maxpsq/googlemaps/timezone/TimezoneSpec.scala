@@ -16,7 +16,7 @@ class TimezoneSpec extends SpecificationWithJUnit {
 
       def ?(x: Location, t: Long) = Await.result(client ?(x, t), Duration(3, SECONDS))
 
-      val epoch = 198264918
+      val epoch = 198264918L
       
       ?(Location(50.516196, 30.466651), epoch) must beRight
       ?(Location(50.445057, 30.521049), epoch) must beRight

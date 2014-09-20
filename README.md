@@ -26,8 +26,10 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 
       //  Geocoding
       ?(AddressParam("Via Montenapoleone, 4, Milan, Italy")) match {
-            case Right(results) => results.foreach(r => println(r.formatted_address + " -> " + r.geometry.location))
-            case Left(error) => println(error)
+         case Right(results) => results.foreach(r => 
+            println(r.formatted_address + " -> " + r.geometry.location)
+         )
+         case Left(error) => println(error)
       }
 
 //    Via Montenapoleone, 20121 Milan, Italy -> Point(45.4678198,9.1958378)
@@ -66,8 +68,10 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
       val epoch = 198264918L
       
       ?(LocationParam(50.516196, 30.466651), epoch) match {
-            case Right(results) => results.foreach(r => println(t.timeZoneName + "offset id " + r.rawOffset))
-            case Left(error) => println(error)
+         case Right(results) => results.foreach(r => 
+            println(t.timeZoneName + "offset id " + r.rawOffset)
+         )
+         case Left(error) => println(error)
       }
    }
 ```

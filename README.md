@@ -19,7 +19,9 @@ TIME ZONE
    import scala.concurrent.duration._
    import com.github.maxpsq.googlemaps.GoogleParameters._
    import com.github.maxpsq.googlemaps.geocoding.Parameters._
+   import com.github.maxpsq.googlemaps.geocoding._
    import com.github.maxpsq.googlemaps.timezone.Parameters._
+   import com.github.maxpsq.googlemaps.timezone._
 
    object GeocodeObj extends GeocodeCalls {
 

@@ -2,8 +2,8 @@ package com.github.maxpsq.googlemaps.geocoding
 
 import play.api.libs.json._
 import play.api.libs.json.Reads._
-import play.api.libs.functional.syntax._
 import com.github.maxpsq.googlemaps.ResponseStatus
+import com.github.maxpsq.googlemaps.GoogleResponse
 
 
 case class AddressComponent(
@@ -11,10 +11,10 @@ case class AddressComponent(
     short_name: String, 
     types: List[String]
 )
-
 object AddressComponent {
   implicit val jsonReads = Json.reads[AddressComponent]
 }
+
 
 case class Point(
     lat: Double,
@@ -23,6 +23,7 @@ case class Point(
 object Point {
   implicit val jsonReads = Json.reads[Point]  
 }
+
 
 case class Rectangle(
     northeast: Point,
@@ -39,11 +40,9 @@ case class Geometry (
     location_type: String,
     viewport: Rectangle
 )
-
 object Geometry {
   implicit val jsonReads = Json.reads[Geometry]  
 }
-
 
 
 case class ResponseResult(
@@ -52,26 +51,15 @@ case class ResponseResult(
     geometry: Geometry,
     types: List[String]
 )
-
 object ResponseResult {
   implicit val jsonReads = Json.reads[ResponseResult]
 }
 
 
-case class GeocodeResponse (
-    results: List[ResponseResult], 
-    status: ResponseStatus.Value,
-    error_message: Option[String]
-)  
-
 object GeocodeResponse {
+
+  def apply(results: List[ResponseResult], status: String, errMsg: Option[String]): GoogleResponse[List[ResponseResult]] = {
+    GoogleResponse[List[ResponseResult]](results, ResponseStatus(status), errMsg )
+  }
   
-  implicit val jsonReads: Reads[GeocodeResponse] = (
-    (__ \ 'results).read[List[ResponseResult]] ~
-    (__ \ 'status).read[String] ~
-    (__ \ 'error_message).readNullable[String] 
-  )( GeocodeResponse.apply( _: List[ResponseResult], _: String, _: Option[String]) ) 
-  
-  def apply(results: List[ResponseResult], status: String, errMsg: Option[String]): GeocodeResponse =
-    GeocodeResponse(results, ResponseStatus(status), errMsg )
 }

@@ -11,12 +11,21 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 ## Example
 
 ```scala
-      val geocode = new Geocode()
 
-      def ?(location: Location) = Await.result(geocode ? location, Duration(3, SECONDS))
+   import scala.concurrent.ExecutionContext.Implicits.global
+   import scala.concurrent.duration._
+   import com.github.maxpsq.googlemaps.GoogleParameters._
+   import com.github.maxpsq.googlemaps.geocoding.Parameters._
+   import com.github.maxpsq.googlemaps.timezone.Parameters._
+
+   object GeocodeObj extends GeocodeCalls {
+
+      implicit val geocodeClient = new GeocodeClient()
+
+      def ?(location: LocationParam) = callGeocode(location, Duration(3, SECONDS))
 
       //  Geocoding
-      ?(Address("Via Montenapoleone, 4, Milan, Italy")) match {
+      ?(AddressParam("Via Montenapoleone, 4, Milan, Italy")) match {
             case Right(results) => results.foreach(r => println(r.formatted_address + " -> " + r.geometry.location))
             case Left(error) => println(error)
       }
@@ -25,7 +34,7 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 
 
       // Reverse Geocoding
-      ?(GeoPoint(51.498685, -0.12967)) match {
+      ?(LatLngParam(51.498685, -0.12967)) match {
             case Right(results) => results.foreach(r => println(r.formatted_address))
             case Left(error) => println(error)
       }
@@ -44,6 +53,23 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 //      Greater London, UK
 //      England, UK
 //      United Kingdom
+   }
+
+
+   object TimezoneObj extends TimezoneCalls {
+
+      //  Time Zone 
+      implicit val timezoneClient = new TimezoneClient()
+
+      def ?(loc: LocationParam, epoch: Long) = callTimezone(loc, epoch, Duration(3, SECONDS))
+
+      val epoch = 198264918L
+      
+      ?(LocationParam(50.516196, 30.466651), epoch) match {
+            case Right(results) => results.foreach(r => println(t.timeZoneName + "offset id " + r.rawOffset))
+            case Left(error) => println(error)
+      }
+   }
 ```
 
 
@@ -65,7 +91,7 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
     <dependency>
         <groupId>com.github.maxpsq</groupId>
         <artifactId>maxpsq-gmapsclient_2.11</artifactId>
-        <version>0.1</version>
+        <version>0.2-SNAPSHOT</version>
     </dependency>
 ```
 
@@ -79,6 +105,6 @@ resolvers += "Sonatype repository" at "https://oss.sonatype.org/service/local/st
 2. Add dependency to your build.sbt:
 ```
 libraryDependencies ++= Seq(
-    "com.github.maxpsq" % "maxpsq-gmapsclient_2.11" % "0.1"
+    "com.github.maxpsq" % "maxpsq-gmapsclient_2.11" % "0.2-SNAPSHOT"
 )
 ```

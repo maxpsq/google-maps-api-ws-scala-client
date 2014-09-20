@@ -32,8 +32,9 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
          case Left(error) => println(error)
       }
 
-//    Via Montenapoleone, 20121 Milan, Italy -> Point(45.4678198,9.1958378)
-
+/* <STDOUT>
+  Via Montenapoleone, 20121 Milan, Italy -> Point(45.4678198,9.1958378)
+*/
 
       // Reverse Geocoding
       ?(LatLngParam(51.498685, -0.12967)) match {
@@ -41,26 +42,27 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
             case Left(error) => println(error)
       }
 
-//      4B Deans Yd, Westminster, London, Greater London SW1P 3NP, UK
-//      Westminster Abbey (Stop W), Westminster, City of Westminster, London SW1P, UK
-//      Westminster, Westminster Abbey (S-bound), Westminster, City of Westminster, London SW1P, UK
-//      Westminster, Westminster Abbey (Stop X), Westminster, City of Westminster, London SW1P, UK
-//      Westminster Abbey (R), Westminster, City of Westminster, London SW1H, UK
-//      Westminster, City of Westminster, London SW1P 3NY, UK
-//      London, Greater London SW1P, UK
-//      Westminster, London, UK
-//      City of Westminster, Greater London, UK
-//      London, UK
-//      London, UK
-//      Greater London, UK
-//      England, UK
-//      United Kingdom
+/* <STDOUT>
+  4B Deans Yd, Westminster, London, Greater London SW1P 3NP, UK
+  Westminster Abbey (Stop W), Westminster, City of Westminster, London SW1P, UK
+  Westminster, Westminster Abbey (S-bound), Westminster, City of Westminster, London SW1P, UK
+  Westminster, Westminster Abbey (Stop X), Westminster, City of Westminster, London SW1P, UK
+  Westminster Abbey (R), Westminster, City of Westminster, London SW1H, UK
+  Westminster, City of Westminster, London SW1P 3NY, UK
+  London, Greater London SW1P, UK
+  Westminster, London, UK
+  City of Westminster, Greater London, UK
+  London, UK
+  London, UK
+  Greater London, UK
+  England, UK
+  United Kingdom
+*/
    }
 
 
    object TimezoneObj extends TimezoneCalls {
 
-      //  Time Zone 
       implicit val timezoneClient = new TimezoneClient()
 
       def ?(loc: LocationParam, epoch: Long) = callTimezone(loc, epoch, Duration(3, SECONDS))
@@ -69,11 +71,15 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
       
       ?(LocationParam(50.516196, 30.466651), epoch) match {
          case Right(results) => results.foreach(r => 
-            println(t.timeZoneName + "offset id " + r.rawOffset)
+            println(t.timeZoneName + " raw offset was " + r.rawOffset + " sec")
          )
          case Left(error) => println(error)
       }
    }
+   
+/* <STDOUT>   
+  Europe/Rome raw offset was 3600 sec
+*/
 ```
 
 

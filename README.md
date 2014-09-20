@@ -4,12 +4,12 @@ Google [Maps API Web Services](https://developers.google.com/maps/documentation/
 
 ## Supports
 
-- GEOCODING
-* Getting responses for an address (geocoding)
-* Getting responses for a GPS coordinate (reverse geocoding)
+* GEOCODING
+- Getting responses for an address (geocoding)
+- Getting responses for a GPS coordinate (reverse geocoding)
 
-- TIME ZONE
-* Getting responses for a GPS coordinate 
+* TIME ZONE
+- Getting responses for a GPS coordinate 
 
 ## Example
 

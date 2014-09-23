@@ -93,32 +93,29 @@ TIME ZONE
 ### Maven
 
 1. Add this repository to your pom.xml:
-```xml
+  ```xml
     <repository>
         <id>maxpsq</id>
         <name>maxpsq Repository</name>
         <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
-```
+  ```
 
 2. Add dependency to your pom.xml:
-```xml
+  ```xml
     <dependency>
         <groupId>com.github.maxpsq</groupId>
         <artifactId>maxpsq-gmapsclient_2.11</artifactId>
         <version>0.2-SNAPSHOT</version>
     </dependency>
-```
+  ```
 
 ### SBT
 
-1. Add this repository to your build.sbt:
+Add this repository and dependency to your build.sbt:
 ```
 resolvers += "Sonatype repository" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-```
 
-2. Add dependency to your build.sbt:
-```
 libraryDependencies ++= Seq(
     "com.github.maxpsq" % "maxpsq-gmapsclient_2.11" % "0.2-SNAPSHOT"
 )

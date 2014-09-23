@@ -1,9 +1,5 @@
 package com.github.maxpsq.googlemaps
 
-import play.api.libs.json._ 
-import play.api.libs.json.Reads._ 
-import play.api.libs.functional.syntax._ 
-
 object ResponseStatus {
   
   sealed trait Value 
@@ -45,7 +41,7 @@ object ResponseStatus {
     override def toString = "INVALID_REQUEST"
   }
 
-  val known = List(Ok, ZeroResults, OverQueryLimit, RequestDenied, InvalidRequest)
+  private val known = List(Ok, ZeroResults, OverQueryLimit, RequestDenied, InvalidRequest)
 
   def apply(s: String): Value = known.find(_.toString == s) getOrElse Unknown(s)
 }

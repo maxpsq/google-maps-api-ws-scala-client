@@ -1,8 +1,5 @@
 package com.github.maxpsq.googlemaps.geocoding
 
-import play.api.libs.json._
-import play.api.libs.json.Reads._
-import play.api.libs.functional.syntax._
 import dispatch._
 import scala.concurrent.ExecutionContext
 import com.github.maxpsq.googlemaps._

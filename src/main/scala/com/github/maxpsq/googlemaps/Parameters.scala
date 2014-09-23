@@ -10,8 +10,7 @@ class ClientParameter(key: String, value: Any) extends Parameter(key, value)
 
 object GoogleParameters {
 
-  // Google API Key
-  
+  // Google API Key  
   case class ApiKeyParam (value: String) extends ClientParameter("apikey", value)  
   
   

@@ -3,7 +3,6 @@ package com.github.maxpsq.googlemaps
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 import dispatch._
 import GoogleParameters._
 
@@ -15,6 +14,8 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
       error_message: Option[String]
   )
   object StatusResponse {
+    import play.api.libs.functional.syntax._
+    
     implicit val jsonReads: Reads[StatusResponse] = (
       (__ \ 'status).read[String] ~
       (__ \ 'error_message).readNullable[String] 
@@ -28,7 +29,7 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
   
   /** 
     * Creates a collection of tupled parameters
-    * from a given set of Parameters, discarding those not set  
+    * from a given set of Parameters  
     * 
     * @param pars a set of Parameters  
     */
@@ -65,8 +66,8 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
 
   
   /** 
-    * Validates the parsed JSON 
-    * returns an Error or the data
+    * Validates the parsed JSON. 
+    * Returns an Error or the data.
     * 
     * @param json the parsed JSON object from Google WS  
     * @param reads implicit deserializer

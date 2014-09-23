@@ -45,11 +45,9 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     * @param ec    implicit ExecutionContext
     * @param reads implicit JSON deserializer
     */
-  def reqHandler[T](req: Req)(
-      implicit ec: ExecutionContext, 
-               statusReads: Reads[StatusResponse], 
-               dataReads: Reads[T]
-  ): Future[Either[Error, T]] = {
+  def reqHandler[T](req: Req)
+                   (implicit ec: ExecutionContext, statusReads: Reads[StatusResponse], dataReads: Reads[T])
+                   : Future[Either[Error, T]] = {
     
     def statusExtractor(json: JsValue) = readsEither[StatusResponse](json)
     def dataExtractor(json: JsValue) = readsEither[T](json)
@@ -72,7 +70,7 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     * @param json the parsed JSON object from Google WS  
     * @param reads implicit deserializer
     */
-  def readsEither[Z](json: JsValue)(implicit rds: Reads[Z]): Either[Error, Z] = { 
+  private def readsEither[Z](json: JsValue)(implicit rds: Reads[Z]): Either[Error, Z] = { 
     rds.reads(json).map(Right(_)).recoverTotal { e => 
       Left(JsonParsingError(JsError.toFlatJson(e).toString))
     }

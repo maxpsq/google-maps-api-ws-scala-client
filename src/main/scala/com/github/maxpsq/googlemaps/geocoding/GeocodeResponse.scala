@@ -2,8 +2,6 @@ package com.github.maxpsq.googlemaps.geocoding
 
 import play.api.libs.json._
 import play.api.libs.json.Reads._
-import com.github.maxpsq.googlemaps.ResponseStatus
-import com.github.maxpsq.googlemaps.GoogleResponse
 
 
 case class AddressComponent(
@@ -45,21 +43,20 @@ object Geometry {
 }
 
 
-case class ResponseResult(
+case class Result(
     address_components: List[AddressComponent], 
     formatted_address: String,
     geometry: Geometry,
     types: List[String]
 )
-object ResponseResult {
-  implicit val jsonReads = Json.reads[ResponseResult]
+object Result {
+  implicit val jsonReads = Json.reads[Result]
 }
 
 
+case class GeocodeResponse (
+    results: List[Result]
+)
 object GeocodeResponse {
-
-  def apply(results: List[ResponseResult], status: String, errMsg: Option[String]): GoogleResponse[List[ResponseResult]] = {
-    GoogleResponse[List[ResponseResult]](results, ResponseStatus(status), errMsg )
-  }
-  
+  implicit val jsonReads = Json.reads[GeocodeResponse] 
 }

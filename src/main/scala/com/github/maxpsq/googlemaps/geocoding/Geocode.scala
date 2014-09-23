@@ -15,25 +15,19 @@ import com.github.maxpsq.googlemaps.geocoding.Parameters._
  * Just create an implicit instance of this and use one of 
  * the GeocodeCalls trait methods to perform a call.
  */
-class GeocodeClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClient[List[ResponseResult]](http, cpars) {
+class GeocodeClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClient[List[Result]](http, cpars) {
 
-  implicit val jsonReads: Reads[GoogleResponse[List[ResponseResult]]] = (
-    (__ \ 'results).read[List[ResponseResult]] ~
-    (__ \ 'status).read[String] ~
-    (__ \ 'error_message).readNullable[String] 
-  )( GeocodeResponse.apply( _: List[ResponseResult], _: String, _: Option[String]) ) 
-  
   def this() = this(Http, Seq(NoSensor()))
   
   /**
    * This call to google service is limited
    * @see https://developers.google.com/maps/documentation/geocoding/#Limits
    */
-  def ?(location: LocationParam)(implicit executionContext: ExecutionContext): Future[Either[Error, List[ResponseResult]]] = {
+  def ?(location: LocationParam)(implicit executionContext: ExecutionContext): Future[Either[Error, List[Result]]] = {
     
     import GeocodeClient._
     
-    reqHandler( req <<? parameters(cpars :+ location) )    
+    reqHandler[List[Result]]( req <<? parameters(cpars :+ location) )    
   }
 
 }
@@ -58,7 +52,7 @@ trait GeocodeCalls {
   import scala.concurrent.Await
   import scala.concurrent.duration._
 
-  def callGeocode(l: LocationParam, d: Duration)(implicit ec: ExecutionContext, client: GeocodeClient): Either[Error, List[ResponseResult]] = {
+  def callGeocode(l: LocationParam, d: Duration)(implicit ec: ExecutionContext, client: GeocodeClient): Either[Error, List[Result]] = {
     Await.result(client ? l, d) 
   }
   

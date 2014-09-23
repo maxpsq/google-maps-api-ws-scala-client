@@ -1,22 +1,30 @@
 package com.github.maxpsq.googlemaps
 
-import play.api.libs.json.JsValue
-import play.api.libs.json.JsError
-import play.api.libs.json.Reads
-import dispatch._
-import GoogleParameters._
-import play.api.libs.json.Json
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
-
-case class GoogleResponse[T] (
-    results: T, 
-    status: ResponseStatus.Value,
-    error_message: Option[String]
-)
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import dispatch._
+import GoogleParameters._
 
 
 class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
+  
+  case class StatusResponse (
+      status: ResponseStatus.Value,
+      error_message: Option[String]
+  )
+  object StatusResponse {
+    implicit val jsonReads: Reads[StatusResponse] = (
+      (__ \ 'status).read[String] ~
+      (__ \ 'error_message).readNullable[String] 
+    )( StatusResponse.apply(_: String, _:Option[String]) ) 
+  
+    def apply(status: String, errMsg: Option[String]): StatusResponse = {
+      StatusResponse(ResponseStatus(status), errMsg)
+    }
+  }
+
   
   /** 
     * Creates a collection of tupled parameters
@@ -36,21 +44,26 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     * @param ec    implicit ExecutionContext
     * @param reads implicit JSON deserializer
     */
-  def reqHandler[T](req: Req)(implicit ec: ExecutionContext, reads: Reads[GoogleResponse[T]]): Future[Either[Error, T]] = {
+  def reqHandler[T](req: Req)(
+      implicit ec: ExecutionContext, 
+               statusReads: Reads[StatusResponse], 
+               dataReads: Reads[T]
+  ): Future[Either[Error, T]] = {
+    
+    def statusExtractor(json: JsValue) = readsEither[StatusResponse](json)
+    def dataExtractor(json: JsValue) = readsEither[T](json)
+    
     http(req OK as.String).map { x =>
-      {
-        try {
-          val json = Json.parse(x)
-          val response = jsonValidation[T](json)
-          evalStatus(response)
-        } catch {
-          case e: JsonParsingException => Left(JsonParsingError(e.getMessage()))
+      val json = Json.parse(x)
+      statusExtractor(json).right.flatMap{ sr => 
+        evalStatus(sr.status).right.flatMap{ ok =>
+          dataExtractor(json)  
         }
-      }  
+      }
     }
   }  
 
-
+  
   /** 
     * Validates the parsed JSON 
     * returns an Error or the data
@@ -58,29 +71,24 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     * @param json the parsed JSON object from Google WS  
     * @param reads implicit deserializer
     */
-  private def jsonValidation[T](json: JsValue)(implicit reads: Reads[GoogleResponse[T]]): GoogleResponse[T] = { 
-    json.validate[GoogleResponse[T]].map{ 
-      case r: GoogleResponse[T] => r
-    }.recoverTotal{
-      e => throw new RuntimeException("Error while parsing JSON: "+ JsError.toFlatJson(e))
+  def readsEither[Z](json: JsValue)(implicit rds: Reads[Z]): Either[Error, Z] = { 
+    rds.reads(json).map(Right(_)).recoverTotal { e => 
+      Left(JsonParsingError(JsError.toFlatJson(e).toString))
     }
   }
   
-  
-  /** 
-    * Evaluates the status of a parsed response from the WS and
-    * returns an Error or the data
-    * 
-    * @param response the parsed response from Google WS  
-    */
-  private def evalStatus[T](response: GoogleResponse[T]): Either[Error, T] = {
-    response.status match {
-      case ResponseStatus.ZeroResults ⇒ Left(ZeroResults)
-      case ResponseStatus.OverQueryLimit ⇒ Left(OverQuotaLimit)
-      case ResponseStatus.RequestDenied ⇒ Left(Denied)
-      case ResponseStatus.InvalidRequest ⇒ Left(InvalidRequest)
-      case _ ⇒ Right(response.results)
-    }
+  /**
+   * Converts a ResponseStatus into a specific Error
+   */
+  private def evalStatus(status: ResponseStatus.Value): Either[Error, _] = {
+    status match {
+      case ResponseStatus.Ok => Right("Ok")
+      case ResponseStatus.ZeroResults => Left(ZeroResults)
+      case ResponseStatus.OverQueryLimit => Left(OverQuotaLimit)
+      case ResponseStatus.RequestDenied => Left(Denied)
+      case ResponseStatus.InvalidRequest => Left(InvalidRequest)
+      case _ => Left(UnhandledStatus)
+    }  
   }
   
 }

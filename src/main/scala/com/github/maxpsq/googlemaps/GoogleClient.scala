@@ -29,7 +29,8 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
   
   /** 
     * Creates a collection of tupled parameters
-    * from a given set of Parameters  
+    * from a given set of Parameters and checking 
+    * for the correctness.
     * 
     * @param pars a set of Parameters  
     */
@@ -62,6 +63,28 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     }
   }  
 
+  /**
+   * Validates the parameters
+   */
+  def validateParameters(pars: Seq[Parameter])(implicit ec: ExecutionContext): Future[Either[Error, Seq[Parameter]]] = Future {
+    
+    def validateParameter(par: Parameter): Either[Error,Parameter] = {
+      par.isValid match {
+        case true => Right(par)
+        case false => Left(InvalidParameterError(par))
+      }
+    }
+    
+    def go(checked: Either[Error,Parameter], toBeChecked: Seq[Parameter], pars: Seq[Parameter]): Either[Error, Seq[Parameter]] = checked match {
+      case Left(error) => Left(error)
+      case Right(par) => toBeChecked match {
+             case (Nil) => Right(pars)
+             case (head :: tail) => go(validateParameter(head), tail, pars)
+      }
+    }
+
+    go( validateParameter(pars.head), pars.tail, pars)
+  }
   
   /** 
     * Validates the parsed JSON. 

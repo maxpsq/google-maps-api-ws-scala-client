@@ -8,7 +8,8 @@ object Parameters {
 
   // Location
   case class LocationParam(point: GeoPoint) extends Parameter("location", point) {
-    override def toString = super.toString()
+    override def isValid: Boolean = point.isValid
+    override def toString: String = super.toString()
   }
   object LocationParam {    
     def apply(lat: Double, lng: Double): LocationParam = LocationParam(new GeoPoint(lat, lng))
@@ -17,7 +18,8 @@ object Parameters {
   
   // Timestamp
   case class TimestampParam(t: Long) extends Parameter("timestamp", t) {
-    override def toString = t.toString
+    override def isValid: Boolean = true
+    override def toString: String = super.toString()
   }
 
 }

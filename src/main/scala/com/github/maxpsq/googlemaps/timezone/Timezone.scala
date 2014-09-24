@@ -21,11 +21,13 @@ class TimezoneClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClie
    * This call to google service is limited
    * @see https://developers.google.com/maps/documentation/timezone/#Limits
    */
-  def ?(location: LocationParam, epoch: TimestampParam)(implicit executionContext: ExecutionContext) = {
+  def ?(location: LocationParam, epoch: TimestampParam)(implicit executionContext: ExecutionContext): Future[Either[Error, TimezoneResponse]]  = {
 
     import TimezoneClientConst._
     
-    reqHandler[TimezoneResponse]( req <<? parameters(cpars ++ Seq(location, epoch) ) )
+    validateParameters( cpars ++ Seq(location, epoch) ).right.flatMap{ checkedPars =>
+      reqHandler[TimezoneResponse]( req <<? parameters( checkedPars ) ) 
+    }    
   }
 }
 

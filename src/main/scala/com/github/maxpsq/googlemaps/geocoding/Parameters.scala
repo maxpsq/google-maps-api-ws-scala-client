@@ -9,7 +9,8 @@ object Parameters {
   
   // LatLng
   case class LatLngParam(lat: Double, lng: Double) extends Parameter("latlng", new GeoPoint(lat, lng)) with LocationParam {
-    override def toString = super.toString()
+    override def isValid: Boolean = super.get.asInstanceOf[GeoPoint].isValid
+    override def toString: String = super.toString()
   }
   object LatLngParam {
     def apply(latitude: String, longitude: String): LatLngParam =
@@ -18,6 +19,8 @@ object Parameters {
 
   
   // Address
-  case class AddressParam(address: String) extends Parameter("address", address) with LocationParam 
+  case class AddressParam(address: String) extends Parameter("address", address) with LocationParam {
+    override def isValid: Boolean = true
+  }
 
 }

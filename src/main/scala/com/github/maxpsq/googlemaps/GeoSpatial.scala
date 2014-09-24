@@ -24,8 +24,6 @@ object GeoSpatials {
     
     def isValid: Boolean = lat.isValid && lng.isValid
       
-    assert( isValid, "Invalid Spatial Point " + this)
-        
     override def toString = "%s,%s".format(lat.coord, lng.coord)
   }
   

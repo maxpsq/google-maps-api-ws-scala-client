@@ -14,7 +14,7 @@ class GeocodeSpec extends SpecificationWithJUnit with GeocodeCalls {
   
   implicit val client = new GeocodeClient()
 
-  def ?(location: LocationParam) = callGeocode(location, Duration(3, SECONDS))
+  def ?(location: LocationParam) = callGeocode(location, Duration(6, SECONDS))
 
   "Geocode" should {
     

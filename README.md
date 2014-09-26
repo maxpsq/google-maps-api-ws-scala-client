@@ -1,4 +1,4 @@
-# Google Maps API client on Scala [![Build Status](https://secure.travis-ci.org/thenewmotion/scala-geocode.png)](http://travis-ci.org/maxpsq/google-maps-api-ws-scala-client)
+# Google Maps API client on Scala [![Build Status](https://secure.travis-ci.org/thenewmotion/scala-geocode.png)](https://travis-ci.org/maxpsq/google-maps-api-ws-scala-client.svg?branch=master)
 
 Google [Maps API Web Services](https://developers.google.com/maps/documentation/webservices/) client written on Scala for geocoding and time zone
 

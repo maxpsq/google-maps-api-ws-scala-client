@@ -25,7 +25,7 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
       StatusResponse(ResponseStatus(status), errMsg)
     }
   }
-
+  
   
   /** 
     * Creates a collection of tupled parameters
@@ -60,9 +60,8 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
           dataExtractor(json)  
         }
       }
-    }
-  }  
-
+    }  
+  }
   /**
    * Validates the parameters
    */

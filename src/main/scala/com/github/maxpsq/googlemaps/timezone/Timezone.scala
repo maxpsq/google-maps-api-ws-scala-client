@@ -17,10 +17,6 @@ class TimezoneClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClie
 
   def this() = this(Http, Seq(NoSensor()))
   
-  /**
-   * This call to google service is limited
-   * @see https://developers.google.com/maps/documentation/timezone/#Limits
-   */
   def ?(location: LocationParam, epoch: TimestampParam)(implicit executionContext: ExecutionContext): Future[Either[Error, TimezoneResponse]]  = {
 
     import TimezoneClientConst._
@@ -55,12 +51,22 @@ trait TimezoneCalls {
   import scala.concurrent.Await
   import scala.concurrent.duration._
 
-  def callTimezone(loc: LocationParam, epoch: Long, d: Duration)(implicit ec: ExecutionContext, client: TimezoneClient) = {
-    Await.result(client ?(loc, TimestampParam(epoch)), d)
+  private val usageLimits = UsageLimits(10, Duration(1, SECONDS))
+  
+  private val throttler = new Throttler(usageLimits)
+  
+  /**
+   * This call to google service is limited
+   * @see https://developers.google.com/maps/documentation/timezone/#Limits
+   */
+  def callTimezone(loc: LocationParam, epoch: Long, d: Duration)(implicit ec: ExecutionContext, client: TimezoneClient)
+  : Either[Error, TimezoneResponse] = {
+    throttler.obeyLimits{ Await.result(client ?(loc, TimestampParam(epoch)), d) }
   }
   
-  def callTimezone(loc: LocationParam, epoch: Int, d: Duration)(implicit ec: ExecutionContext, client: TimezoneClient) = {
-    Await.result(client ?(loc, TimestampParam(epoch.toLong)), d)
+  def callTimezone(loc: LocationParam, epoch: Int,  d: Duration)(implicit ec: ExecutionContext, client: TimezoneClient)
+  : Either[Error, TimezoneResponse] = {
+    callTimezone(loc, epoch.toLong, d)
   }
     
 }

@@ -16,10 +16,6 @@ class GeocodeClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClien
 
   def this() = this(Http, Seq(NoSensor()))
   
-  /**
-   * This call to google service is limited
-   * @see https://developers.google.com/maps/documentation/geocoding/#Limits
-   */
   def ?(location: LocationParam)(implicit executionContext: ExecutionContext): Future[Either[Error, GeocodeResponse]] = {
     
     import GeocodeClient._
@@ -49,9 +45,19 @@ trait GeocodeCalls {
   
   import scala.concurrent.Await
   import scala.concurrent.duration._
+  
+  private val usageLimits = UsageLimits(10, Duration(1, SECONDS))
+  
+  private val throttler = new Throttler(usageLimits)
+  
 
-  def callGeocode(l: LocationParam, d: Duration)(implicit ec: ExecutionContext, client: GeocodeClient): Either[Error, GeocodeResponse] = {
-    Await.result(client ? l, d) 
+  /**
+   * This call to google service is limited
+   * @see https://developers.google.com/maps/documentation/geocoding/#Limits
+   */
+  def callGeocode(l: LocationParam, d: Duration)(implicit ec: ExecutionContext, client: GeocodeClient)
+  : Either[Error, GeocodeResponse] = {
+    throttler.obeyLimits{ Await.result(client ? l, d) } 
   }
   
 }

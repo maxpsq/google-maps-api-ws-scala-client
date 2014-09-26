@@ -1,15 +1,18 @@
 # Google Maps API client on Scala [![Build Status](https://secure.travis-ci.org/thenewmotion/scala-geocode.png)](http://travis-ci.org/maxpsq/google-maps-api-ws-scala-client)
 
-Google [Maps API Web Services](https://developers.google.com/maps/documentation/webservices/) client written on Scala
+Google [Maps API Web Services](https://developers.google.com/maps/documentation/webservices/) client written on Scala for geocoding and time zone
 
 ## Supports
 
-GEOCODING
+[GEOCODING](https://developers.google.com/maps/documentation/geocoding/)
 * Getting responses for an address (geocoding)
 * Getting responses for a GPS coordinate (reverse geocoding)
 
-TIME ZONE
-* Getting responses for a GPS coordinate 
+[TIME ZONE](https://developers.google.com/maps/documentation/timezone/)
+* Getting responses for a GPS coordinate and timestamp 
+
+NEED MORE?
+* Any contribution will be very welcome! Please feel free to add comments, suggestions and of course to fork this repo and sending pull requests. Take a look at what is needed in the [issues page](https://github.com/maxpsq/google-maps-api-ws-scala-client/issues/)
 
 ## Example
 

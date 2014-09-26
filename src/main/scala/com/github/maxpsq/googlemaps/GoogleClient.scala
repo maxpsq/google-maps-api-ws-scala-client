@@ -56,7 +56,7 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     http(req OK as.String).map { x =>
       val json = Json.parse(x)
       statusExtractor(json).right.flatMap{ sr => 
-        evalStatus(sr.status).right.flatMap{ ok =>
+        evalStatus(sr).right.flatMap{ ok =>
           dataExtractor(json)  
         }
       }
@@ -101,14 +101,18 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
   /**
    * Converts a ResponseStatus into a specific Error
    */
-  private def evalStatus(status: ResponseStatus.Value): Either[Error, _] = {
+  private def evalStatus(statusResp: StatusResponse): Either[Error, _] = {
+    val ( status, msg ) = statusResp match {
+      case StatusResponse( status , Some(msg) ) => ( status,  msg)
+      case StatusResponse( status , None ) =>  ( status,  status.toString())
+    } 
     status match {
       case ResponseStatus.Ok => Right("Ok")
-      case ResponseStatus.ZeroResults => Left(ZeroResults)
-      case ResponseStatus.OverQueryLimit => Left(OverQuotaLimit)
-      case ResponseStatus.RequestDenied => Left(Denied)
-      case ResponseStatus.InvalidRequest => Left(InvalidRequest)
-      case _ => Left(UnhandledStatus)
+      case ResponseStatus.ZeroResults => Left(ZeroResults(msg))
+      case ResponseStatus.OverQueryLimit => Left(OverQuotaLimit(msg))
+      case ResponseStatus.RequestDenied => Left(Denied(msg))
+      case ResponseStatus.InvalidRequest => Left(InvalidRequest(msg))
+      case _  => Left(UnhandledStatus(msg))
     }  
   }
   

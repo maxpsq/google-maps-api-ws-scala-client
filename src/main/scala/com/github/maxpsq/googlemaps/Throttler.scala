@@ -16,7 +16,7 @@ case class UsageLimits(calls: Int, duration: Duration) {
 class Throttler(limits: UsageLimits) {
 
   private val cache: mutable.Queue[Long] = mutable.Queue()
-  cache.enqueue(now)
+  cache.enqueue(0L) // Epoch time January 1, 1970
   
   def obeyLimits[T](block: => T): T = {
     if ( doWait ) Thread.sleep(limits.rate)
@@ -29,7 +29,11 @@ class Throttler(limits: UsageLimits) {
   }
   
   private def record(t: Long): Unit = {
-    cache.dequeue
+    // .dequeue will raise an Exception on an empty Queue.
+    // This is not expected to happen being the Queue initialized
+    // with 1 element.
+    // If that happens, there is a problem somewhere.
+    cache.dequeue 
     cache.enqueue(t)
   }
 

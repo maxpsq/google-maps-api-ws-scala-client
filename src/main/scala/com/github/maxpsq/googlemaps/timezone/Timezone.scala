@@ -50,10 +50,6 @@ trait TimezoneCalls {
   
   import scala.concurrent.Await
   import scala.concurrent.duration._
-
-  private val usageLimits = UsageLimits(10, Duration(1, SECONDS))
-  
-  private val throttler = new Throttler(usageLimits)
   
   /**
    * This call to google service is limited
@@ -61,7 +57,7 @@ trait TimezoneCalls {
    */
   def callTimezone(loc: LocationParam, epoch: Long, d: Duration)(implicit ec: ExecutionContext, client: TimezoneClient)
   : Either[Error, TimezoneResponse] = {
-    throttler.obeyLimits{ Await.result(client ?(loc, TimestampParam(epoch)), d) }
+    Await.result(client ?(loc, TimestampParam(epoch)), d) 
   }
   
   def callTimezone(loc: LocationParam, epoch: Int,  d: Duration)(implicit ec: ExecutionContext, client: TimezoneClient)

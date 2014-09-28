@@ -45,19 +45,15 @@ trait GeocodeCalls {
   
   import scala.concurrent.Await
   import scala.concurrent.duration._
-  
-  private val usageLimits = UsageLimits(10, Duration(1, SECONDS))
-  
-  private val throttler = new Throttler(usageLimits)
-  
 
   /**
    * This call to google service is limited
    * @see https://developers.google.com/maps/documentation/geocoding/#Limits
    */
-  def callGeocode(l: LocationParam, d: Duration)(implicit ec: ExecutionContext, client: GeocodeClient)
-  : Either[Error, GeocodeResponse] = {
-    throttler.obeyLimits{ Await.result(client ? l, d) } 
+  def callGeocode(l: LocationParam, d: Duration)
+                 (implicit ec: ExecutionContext, client: GeocodeClient)
+                 : Either[Error, GeocodeResponse] = {
+    Await.result(client ? l, d)  
   }
   
 }

@@ -53,15 +53,20 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     def statusExtractor(json: JsValue) = readsEither[StatusResponse](json)
     def dataExtractor(json: JsValue) = readsEither[T](json)
     
-    http(req OK as.String).map { x =>
-      val json = Json.parse(x)
-      statusExtractor(json).right.flatMap{ sr => 
-        evalStatus(sr).right.flatMap{ ok =>
-          dataExtractor(json)  
+    http(req OK as.String).fold ( 
+        th => { Left(HttpError(th.getMessage())) },
+        str => { val json = Json.parse(str)
+          statusExtractor(json).right.flatMap{ sr => 
+            evalStatus(sr).right.flatMap{ ok =>
+              dataExtractor(json)  
+            }
+          }
         }
-      }
-    }  
+    )  
   }
+  
+  
+  
   /**
    * Validates the parameters
    */

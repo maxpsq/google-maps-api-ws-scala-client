@@ -9,4 +9,4 @@ case class InvalidRequest(msg: String)  extends Error
 case class UnhandledStatus(msg: String) extends Error
 case class JsonParsingError(msg: String) extends Error
 case class InvalidParameterError(par: Parameter) extends Error
-
+case class HttpError(msg: String) extends Error

@@ -30,5 +30,16 @@ class GeocodeSpec extends SpecificationWithJUnit with GeocodeCalls {
       ?(AddressParam("Via Condotti, 3, Rome, Italy")) must beRight
       ?(AddressParam("Viale Nazzario Sauro, 2, Pavia, Italy")) must beRight
     }
+
+    "raise an exception on too many OverQuota" in {
+      var youGotAnException = false
+      try {
+      for ( i <- Range(1,15) )
+          ?(AddressParam("Via Montenapoleane, 2, Milan, Italy")) must beLeft
+      } catch {
+        case th: Throwable => youGotAnException = true
+      }    
+      youGotAnException
+    }
   }
 }

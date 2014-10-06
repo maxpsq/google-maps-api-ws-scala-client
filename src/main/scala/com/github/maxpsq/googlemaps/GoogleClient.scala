@@ -26,6 +26,16 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     }
   }
   
+  private val overQuotaMax = 10
+  private var overQuotaCounter = 0
+  
+  def resetOverQuota: Unit = overQuotaCounter = 0
+  def incOverQuota: Unit = {
+    overQuotaCounter += 1
+    if ( overQuotaCounter > overQuotaMax ) throw 
+          new RuntimeException(s"Maximum (${overQuotaCounter}) OverQuotaLimit exceeded")
+  }
+  
   
   /** 
     * Creates a collection of tupled parameters
@@ -66,6 +76,9 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
   }
   
   
+  def stopOnOverQuotaLimit[Z](block: => Z) = {
+    block
+  }
   
   /**
    * Validates the parameters
@@ -112,9 +125,9 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
       case StatusResponse( status , None ) =>  ( status,  status.toString())
     } 
     status match {
-      case ResponseStatus.Ok => Right("Ok")
+      case ResponseStatus.Ok => resetOverQuota ; Right("Ok")
       case ResponseStatus.ZeroResults => Left(ZeroResults(msg))
-      case ResponseStatus.OverQueryLimit => Left(OverQuotaLimit(msg))
+      case ResponseStatus.OverQueryLimit => incOverQuota ; Left(OverQuotaLimit(msg))
       case ResponseStatus.RequestDenied => Left(Denied(msg))
       case ResponseStatus.InvalidRequest => Left(InvalidRequest(msg))
       case _  => Left(UnhandledStatus(msg))

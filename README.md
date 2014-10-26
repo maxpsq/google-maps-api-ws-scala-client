@@ -120,6 +120,6 @@ Add this repository and dependency to your build.sbt:
 resolvers += "Sonatype repository" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 
 libraryDependencies ++= Seq(
-    "com.github.maxpsq" % "maxpsq-gmapsclient_2.11" % "0.2-SNAPSHOT"
+    "com.github.maxpsq" %% "maxpsq-gmapsclient" % "0.2-SNAPSHOT"
 )
 ```

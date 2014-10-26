@@ -11,7 +11,7 @@ crossScalaVersions := Seq("2.10.4", "2.11.2")
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= Seq(
-    "com.typesafe.play" %% "play-json" % "2.3.4",
+    "com.typesafe.play" %% "play-json" % "2.3.5",
     "net.databinder.dispatch" %% "dispatch-core" % "0.11.2",
     "org.specs2" %% "specs2" % "2.3.13" % "test"
 )

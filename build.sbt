@@ -4,7 +4,7 @@ name := "google-maps-api-ws-scala-client"
 
 version := "0.2-SNAPSHOT"
 
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.7"
 
 crossScalaVersions := Seq("2.10.4", "2.11.4")
 

@@ -1,14 +1,11 @@
 package com.github.maxpsq.googlemaps.timezone
 
-import org.junit.runner._
 import org.specs2.runner._
 import org.specs2.mutable._
-import org.specs2.mutable.SpecificationWithJUnit
 import Parameters._
 import com.github.maxpsq.googlemaps.GeoSpatials._
 
-@RunWith(classOf[JUnitRunner])
-class ParametersSpec extends SpecificationWithJUnit {
+class ParametersSpec extends Specification {
 
   "Parameter LocationParam " should {
     

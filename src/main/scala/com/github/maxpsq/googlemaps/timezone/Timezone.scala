@@ -15,7 +15,7 @@ import com.github.maxpsq.googlemaps.timezone.Parameters._
  */
 class TimezoneClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClient[TimezoneResponse](http, cpars) {
 
-  def this() = this(Http, Seq(NoSensor()))
+  def this() = this(Http.default, Seq(NoSensor()))
   
   def ?(location: LocationParam, epoch: TimestampParam)(implicit executionContext: ExecutionContext): Future[Either[Error, TimezoneResponse]]  = {
 

@@ -1,16 +1,13 @@
 package com.github.maxpsq.googlemaps.geocoding
 
-import org.junit.runner._
 import org.specs2.runner._
 import org.specs2.mutable._
-import org.specs2.mutable.SpecificationWithJUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import com.github.maxpsq.googlemaps.GoogleParameters._
 import Parameters._
 
-@RunWith(classOf[JUnitRunner])
-class GeocodeSpec extends SpecificationWithJUnit with GeocodeCalls {
+class GeocodeSpec extends Specification with GeocodeCalls {
   
   implicit val client = new GeocodeClient()
 

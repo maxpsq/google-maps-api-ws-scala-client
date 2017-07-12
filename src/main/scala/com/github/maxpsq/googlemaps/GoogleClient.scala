@@ -112,7 +112,7 @@ class GoogleClient[T](http: Http, cpars: Seq[ClientParameter]) {
     */
   private def readsEither[Z](json: JsValue)(implicit rds: Reads[Z]): Either[Error, Z] = { 
     rds.reads(json).map(Right(_)).recoverTotal { e => 
-      Left(JsonParsingError(JsError.toFlatJson(e).toString))
+      Left(JsonParsingError(JsError.toFlatForm(e).toString))
     }
   }
   

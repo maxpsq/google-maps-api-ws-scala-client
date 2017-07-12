@@ -93,6 +93,10 @@ NEED MORE?
 
 ## Setup
 
+Version 0.3-SNAPSHOT of this client is built for Scala 2.12.2 and Scala 2.11.11
+
+In case you wish to use this client on Scala 2.10, add dependency to the previous release 0.2-SNAPSHOT
+
 ### Maven
 
 1. Add this repository to your pom.xml:
@@ -108,8 +112,8 @@ NEED MORE?
   ```xml
     <dependency>
         <groupId>com.github.maxpsq</groupId>
-        <artifactId>maxpsq-gmapsclient_2.11</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <artifactId>maxpsq-gmapsclient_2.12</artifactId>
+        <version>0.3-SNAPSHOT</version>
     </dependency>
   ```
 
@@ -120,6 +124,6 @@ Add this repository and dependency to your build.sbt:
 resolvers += "Sonatype repository" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 
 libraryDependencies ++= Seq(
-    "com.github.maxpsq" %% "maxpsq-gmapsclient" % "0.2-SNAPSHOT"
+    "com.github.maxpsq" %% "maxpsq-gmapsclient" % "0.3-SNAPSHOT"
 )
 ```

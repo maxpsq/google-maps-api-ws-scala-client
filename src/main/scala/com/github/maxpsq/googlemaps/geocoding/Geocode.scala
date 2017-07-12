@@ -14,7 +14,7 @@ import com.github.maxpsq.googlemaps.geocoding.Parameters._
  */
 class GeocodeClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClient[GeocodeResponse](http, cpars) {
 
-  def this() = this(Http, Seq(NoSensor()))
+  def this() = this(Http.default, Seq(NoSensor()))
   
   def ?(location: LocationParam)(implicit executionContext: ExecutionContext): Future[Either[Error, GeocodeResponse]] = {
     

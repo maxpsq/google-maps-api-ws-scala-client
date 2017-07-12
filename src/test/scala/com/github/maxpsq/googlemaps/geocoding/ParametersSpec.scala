@@ -1,13 +1,10 @@
 package com.github.maxpsq.googlemaps.geocoding
 
-import org.junit.runner._
 import org.specs2.runner._
 import org.specs2.mutable._
-import org.specs2.mutable.SpecificationWithJUnit
 import Parameters._
 
-@RunWith(classOf[JUnitRunner])
-class ParametersSpec extends SpecificationWithJUnit {
+class ParametersSpec extends Specification {
 
   def parStr(lat: Double,lng: Double) = s"latlng=${lat},${lng}"  
   

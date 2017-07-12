@@ -1,9 +1,7 @@
 package com.github.maxpsq.googlemaps.timezone
 
-import org.junit.runner._
 import org.specs2.runner._
 import org.specs2.mutable._
-import org.specs2.mutable.SpecificationWithJUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.collection.mutable
@@ -11,8 +9,7 @@ import com.github.maxpsq.googlemaps.GoogleParameters._
 import com.github.maxpsq.googlemaps._
 import Parameters._
 
-@RunWith(classOf[JUnitRunner])
-class TimezoneSpec extends SpecificationWithJUnit with TimezoneCalls {
+class TimezoneSpec extends Specification with TimezoneCalls {
   
   implicit val client: TimezoneClient = new TimezoneClient()
 

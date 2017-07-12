@@ -2,18 +2,18 @@ organization := "com.github.maxpsq"
 
 name := "google-maps-api-ws-scala-client"
 
-version := "0.2-SNAPSHOT"
+version := "0.3-SNAPSHOT"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.12.2"
 
-crossScalaVersions := Seq("2.10.4", "2.11.4")
+crossScalaVersions := Seq("2.11.11", "2.12.2")
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= Seq(
-    "com.typesafe.play" %% "play-json" % "2.3.5",
-    "net.databinder.dispatch" %% "dispatch-core" % "0.11.3",
-    "org.specs2" %% "specs2" % "2.3.13" % "test"
+    "com.typesafe.play" %% "play-json" % "2.6.0",
+    "net.databinder.dispatch" %% "dispatch-core" % "0.13.1",
+    "org.specs2" %% "specs2-core" % "3.8.6" % "test"
 )
 
 /* Module name: it will be given to the packaged .jar file */

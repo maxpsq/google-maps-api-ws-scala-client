@@ -1,13 +1,10 @@
 package com.github.maxpsq.googlemaps
 
-import org.junit.runner._
 import org.specs2.runner._
 import org.specs2.mutable._
-import org.specs2.mutable.SpecificationWithJUnit
 import GoogleParameters._
 
-@RunWith(classOf[JUnitRunner])
-class ParametersSpec extends SpecificationWithJUnit {
+class ParametersSpec extends Specification {
 
   def parStr(t: Boolean) = s"sensor="+t.toString()  
   

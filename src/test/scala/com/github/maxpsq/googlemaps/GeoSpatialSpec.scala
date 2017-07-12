@@ -1,13 +1,10 @@
 package com.github.maxpsq.googlemaps
 
-import org.junit.runner._
 import org.specs2.runner._
 import org.specs2.mutable._
-import org.specs2.mutable.SpecificationWithJUnit
 import GeoSpatials._
 
-@RunWith(classOf[JUnitRunner])
-class GeoSpatialSpec extends SpecificationWithJUnit {
+class GeoSpatialSpec extends Specification {
   
   "GeoSpatials enities " should {
     

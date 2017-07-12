@@ -13,7 +13,7 @@ import dispatch.Http
 @RunWith(classOf[JUnitRunner])
 class GoogleClientSpec extends SpecificationWithJUnit {
   
-  val client = new GoogleClient(Http, Seq(LanguageParam("en")))
+  val client = new GoogleClient(Http.default, Seq(LanguageParam("en")))
 
   "GoogleClient paramList()" should {
     

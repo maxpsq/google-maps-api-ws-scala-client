@@ -30,7 +30,7 @@ class GeocodeClient(http: Http, cpars: Seq[ClientParameter]) extends GoogleClien
  * Constant values to be injected into the client instance
  */
 object GeocodeClient {
-  val req = url("http://maps.googleapis.com") / "maps" / "api" / "geocode" / "json"
+  val req = url("https://maps.googleapis.com") / "maps" / "api" / "geocode" / "json"
 }
 
 

@@ -47,7 +47,8 @@ case class Result(
     address_components: List[AddressComponent], 
     formatted_address: String,
     geometry: Geometry,
-    types: List[String]
+    types: List[String],
+    place_id: String
 )
 object Result {
   implicit val jsonReads = Json.reads[Result]

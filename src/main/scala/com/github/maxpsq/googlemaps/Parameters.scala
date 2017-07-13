@@ -13,7 +13,7 @@ abstract class ClientParameter(key: String, value: Any) extends Parameter(key, v
 object GoogleParameters {
 
   // Google API Key  
-  case class ApiKeyParam (value: String) extends ClientParameter("apikey", value) {
+  case class ApiKeyParam (value: String) extends ClientParameter("key", value) {
     override def isValid: Boolean = true 
   }  
   
